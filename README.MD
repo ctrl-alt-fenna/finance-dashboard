@@ -7,7 +7,7 @@ This program needs an Excel formatted file with extension .xls or .xlsx, with co
 ## Config
 The config.json file needs to be set up with a few required and a few optional configuration parameters. Required parameters are bold, optional ones are italic.
 - **filename (e.g. finance_2026.xls)**
-- **excluded_descriptions (e.g. ["transfer", "takeout"])**
+- *excluded_descriptions (e.g. ["transfer", "takeout"])*
 - *start_date (e.g. "2026-01-01)*
 - *end_date (e.g. "2026-12-31)*
 - *date_format (e.g. "%Y-%m-%d)*
