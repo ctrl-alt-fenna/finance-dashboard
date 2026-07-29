@@ -34,6 +34,7 @@ def load_config(filename):
         income_categories = data.get("income_categories", [])
         excluded_descriptions = data.get("excluded_descriptions", [])
         date_format = data.get("date_format", '%Y%m%d')
+        currency = data.get("currency", "usd")
 
         start_date_raw = data.get("start_date", "")
         end_date_raw = data.get("end_date", "")
@@ -65,7 +66,8 @@ def load_config(filename):
         "excluded_descriptions": excluded_descriptions,
         "start_date" : start_date,
         "end_date": end_date,
-        "date_format": date_format
+        "date_format": date_format,
+        "currency": currency
     }
     
 # Read the Excel finance data, clean it, and split it into income and expenses.
@@ -80,6 +82,7 @@ def filter_data(config_filename):
     excluded_descriptions = '|'.join(config["excluded_descriptions"])
 
     # Read the relevant columns from the Excel file.
+    # TODO: Add automatic conversion based in input fields. Descriptions would always inclued letters, amount would include decimals, date would probably be 8 characters in length. 
     transactions = pd.read_excel(config["finance_file"])[["Amount", "Date", "Description"]]
 
     # Convert the amount column to numeric values and replace missing values with 0.
@@ -108,6 +111,7 @@ def filter_data(config_filename):
 # Create the chart showing cumulative income, cumulative expenses, and the net difference.
 def plot_data():
     # Load the cleaned and separated income/expense data.
+    config = load_config("debug_config.json")
     data = filter_data("debug_config.json")
     fig, ax = plt.subplots()
 
@@ -145,7 +149,8 @@ def plot_data():
     daily["difference"] = daily["income_cumulative"] - daily["expenses_cumulative"]
 
     # Format the x-axis as dates for easier reading.
-    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %Y"))
+    ax.xaxis.set_major_locator(mdates.MonthLocator(bymonthday=1))
     fig.autofmt_xdate()
 
     # Plot the cumulative income and expenses lines.
@@ -164,10 +169,25 @@ def plot_data():
         ax.scatter(date, value, color=color, s=20)
 
     # Add labels and show the finished chart.
+    currency_symbols = {
+        "usd": "$",
+        "eur": "€",
+        "gbp": "£",
+        "jpy": "¥"
+    }
+    currency_symbol = currency_symbols.get(config["currency"].lower(), config["currency"])
+
     ax.set_title("Income vs Expenses")
     ax.set_xlabel("Date")
-    ax.set_ylabel("Cumulative amount")
+    ax.set_ylabel(f"Cumulative amount ({currency_symbol})")
+    ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda value, _: f"{currency_symbol}{value:,.0f}"))
     ax.legend()
+
+    ax.grid(True, which='major', axis='x', color='grey', linewidth=0.5, alpha=0.5)
+    ax.grid(True, which='major', axis='y', color='grey', linewidth=0.5, alpha=0.5)
+    
+    fig.canvas.manager.set_window_title("Finance Dashboard")
+    fig.canvas.manager.resize(1280, 720)
     plt.show()
 
 
