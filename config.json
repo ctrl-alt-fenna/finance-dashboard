@@ -1,0 +1,8 @@
+{
+    "finance_file": "",
+    "expense_categories": ["housing", "insurance", "food", "utilities", "transportation", "savings", "hobby", "personal"],
+    "income_categories": ["salary", "tax_returns", "interest", "benefits"],
+    "excluded_descriptions": [""],
+    "start_date": "",
+    "end_date": ""
+}

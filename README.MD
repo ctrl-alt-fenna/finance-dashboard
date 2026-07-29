@@ -1,0 +1,17 @@
+# Finance dashboard
+A python program to plot income against expenses, showing the difference as a seperate plot. 
+
+## Requirements
+This program needs an Excel formatted file with extension .xls or .xlsx, with columns labeled Date, Amount and Description. In the config.json file you can specify any requirements, see the explanation below for more in depth instructions. You need to install any missing python libraries by using `pip install [module]`.
+
+## Config
+The config.json file needs to be set up with a few required and a few optional configuration parameters. Required parameters are bold, optional ones are italic.
+- **filename (e.g. finance_2026.xls)**
+- **excluded_descriptions (e.g. ["transfer", "takeout"])**
+- *start_date (e.g. "2026-01-01)*
+- *end_date (e.g. "2026-12-31)*
+- *date_format (e.g. "%Y-%m-%d)*
+
+N.B.: If **ANY** date parameter is filled in, **make sure to fill in the date_format**! Only one of the two date fields can be filled in, any empty field will be defaulted to the max value (01-01-0000 for start_date and 31-31-9999 for end_date).
+
+I'm still working on categorizing each transaction based on given categories and asking a few questions to the user, so I already included those in the config file. 
