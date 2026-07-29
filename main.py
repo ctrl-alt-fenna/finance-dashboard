@@ -168,7 +168,6 @@ def plot_data():
     for date, value, color in zip(daily["Date"], daily["difference"], point_colors):
         ax.scatter(date, value, color=color, s=20)
 
-    # Add labels and show the finished chart.
     currency_symbols = {
         "usd": "$",
         "eur": "€",
@@ -177,6 +176,7 @@ def plot_data():
     }
     currency_symbol = currency_symbols.get(config["currency"].lower(), config["currency"])
 
+    # Add labels and show the finished chart.
     ax.set_title("Income vs Expenses")
     ax.set_xlabel("Date")
     ax.set_ylabel(f"Cumulative amount ({currency_symbol})")
@@ -185,6 +185,24 @@ def plot_data():
 
     ax.grid(True, which='major', axis='x', color='grey', linewidth=0.5, alpha=0.5)
     ax.grid(True, which='major', axis='y', color='grey', linewidth=0.5, alpha=0.5)
+
+    # Grab the final totals to show next to the graph.
+    last_date = daily["Date"].iloc[-1]
+    final_income = daily["income_cumulative"].iloc[-1]
+    final_expenses = daily["expenses_cumulative"].iloc[-1]
+    final_difference = daily["difference"].iloc[-1]
+
+    # Add box to annotate the final totals.
+    ax.annotate(
+        f"Income: {currency_symbol}{final_income:,.0f}\n"
+        f"Expenses: {currency_symbol}{final_expenses:,.0f}\n"
+        f"Difference: {currency_symbol}{final_difference:,.0f}",
+        xy=(last_date, final_difference),
+        xytext=(10, 10),
+        textcoords="offset points",
+        fontsize=9,
+        bbox=dict(boxstyle="round,pad=0.3", facecolor="white", edgecolor="lightgray")
+    )
     
     fig.canvas.manager.set_window_title("Finance Dashboard")
     fig.canvas.manager.resize(1280, 720)

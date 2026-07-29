@@ -19,7 +19,7 @@ Currencies currently supported:
 - usd ($)
 - eur (€)
 - gbp (£)
-- jpy" (¥)
+- jpy (¥)
 Default is usd.
 
 I'm still working on categorizing each transaction based on given categories by asking a few questions to the user, but I already included those in the config file. 
