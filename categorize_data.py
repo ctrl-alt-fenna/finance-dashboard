@@ -18,34 +18,32 @@ def categorize_expenses():
     loans = '|'.join(categories["loans"])
     
     # Create masks by filtering rows if description matches any of the categories.
-    housing_mask = pd.Series(True, index=expenses.index)
-    insurance_mask = pd.Series(True, index=expenses.index)
-    util_mask = pd.Series(True, index=expenses.index)
-    grocery_mask = pd.Series(True, index=expenses.index)
-    streaming_mask = pd.Series(True, index=expenses.index)
-    transportation_mask = pd.Series(True, index=expenses.index)
-    hobbies_mask = pd.Series(True, index=expenses.index)
-    loans_mask = pd.Series(True, index=expenses.index)
+    housing_mask = pd.Series(False, index=expenses.index)
+    insurance_mask = pd.Series(False, index=expenses.index)
+    util_mask = pd.Series(False, index=expenses.index)
+    grocery_mask = pd.Series(False, index=expenses.index)
+    streaming_mask = pd.Series(False, index=expenses.index)
+    transportation_mask = pd.Series(False, index=expenses.index)
+    hobbies_mask = pd.Series(False, index=expenses.index)
+    loans_mask = pd.Series(False, index=expenses.index)
     
     # Mask each category to filter easily
     if housing:
-        housing_mask = expenses["Description"].str.contains(housing, case=False, na=False) == True
+        housing_mask = expenses["Description"].str.contains(housing, case=False, na=False)
     if insurance:
-        insurance_mask = expenses["Description"].str.contains(insurance, case=False, na=False) == True
+        insurance_mask = expenses["Description"].str.contains(insurance, case=False, na=False)
     if utils:
-        util_mask = expenses["Description"].str.contains(utils, case=False, na=False) == True
+        util_mask = expenses["Description"].str.contains(utils, case=False, na=False)
     if groceries:
-        grocery_mask = expenses["Description"].str.contains(groceries, case=False, na=False) == True
+        grocery_mask = expenses["Description"].str.contains(groceries, case=False, na=False)
     if streaming:
-        streaming_mask = expenses["Description"].str.contains(streaming, case=False, na=False) == True
-    if streaming:
-        streaming_mask = expenses["Description"].str.contains(streaming, case=False, na=False) == True
+        streaming_mask = expenses["Description"].str.contains(streaming, case=False, na=False)
     if transportation:
-        transportation_mask = expenses["Description"].str.contains(transportation, case=False, na=False) == True
+        transportation_mask = expenses["Description"].str.contains(transportation, case=False, na=False)
     if hobbies:
-        hobbies_mask = expenses["Description"].str.contains(hobbies, case=False, na=False) == True
+        hobbies_mask = expenses["Description"].str.contains(hobbies, case=False, na=False)
     if loans:
-        loans_mask = expenses["Description"].str.contains(loans, case=False, na=False) == True
+        loans_mask = expenses["Description"].str.contains(loans, case=False, na=False)
     
     other_mask = (~housing_mask  & ~insurance_mask & ~util_mask & ~grocery_mask & ~streaming_mask & ~transportation_mask & ~hobbies_mask & ~loans_mask)
         

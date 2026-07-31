@@ -33,3 +33,10 @@ Currencies currently supported:
 - jpy (¥)
 
 Default is usd.
+
+## Necessary python libraries:
+- openpyxl
+- matplotlib
+- pandas
+- json
+- numpy

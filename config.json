@@ -1,9 +1,10 @@
 {
-    "finance_file": "",
+    "finance_file": "finance_example.xls",
     "expense_categories": ["housing", "insurance", "food", "utilities", "transportation", "savings", "hobby", "personal"],
     "income_categories": ["salary", "tax_returns", "interest", "benefits"],
-    "excluded_descriptions": [""],
+    "excluded_descriptions": ["transfer"],
     "start_date": "",
     "end_date": "",
-    "currency": ""
+    "currency": "usd",
+    "date_format": "%Y-%m-%d"
 }

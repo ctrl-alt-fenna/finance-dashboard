@@ -1,10 +1,9 @@
 {
-    "housing" : [],
-    "insurance" : [],
-    "utilities": [],
-    "groceries" : [],
-    "streaming" : [],
-    "transportation" : [],
-    "hobbies": [],
-    "loans" : []
+    "housing" : ["rent"],
+    "insurance" : ["insurance"],
+    "utilities": ["internet", "water bill", "electricity", "mobile"],
+    "groceries" : ["groceries", "household supplies"],
+    "streaming" : ["streaming"],
+    "transportation" : ["transportation", "transport"],
+    "hobbies": ["clothing"]
 }

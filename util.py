@@ -5,7 +5,7 @@ import datetime
 
 global CONFIG_FILENAME
 global CATEGORIES_FILENAME
-CONFIG_FILENAME = "debug_config.json"
+CONFIG_FILENAME = "config.json"
 CATEGORIES_FILENAME = "categories.json"
 
 def parse_date_value(value, date_format):
