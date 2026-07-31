@@ -15,6 +15,12 @@ The config.json file needs to be set up with a few required and a few optional c
 
 N.B.: The default date_format is "%Y%m%d". Note that this does not include dashes (example date "20260101). If **ANY** date parameter is filled in with any other format, **make sure to fill in the date_format accordingly**! Only one of the two date fields can be filled in, any empty field will be defaulted to a max value (01-01-0000 for start_date and 31-31-9999 for end_date).
 
+## Categories
+In categories.json, add any description markers for certain transactions. For example, your rent might always have "RENT" in the description, and your insurance might always have "Insurance company" in the description. Supported categories:
+- housing
+- utilities
+- insurance
+
 Currencies currently supported:
 - usd ($)
 - eur (€)
