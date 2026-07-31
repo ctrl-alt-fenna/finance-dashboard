@@ -123,7 +123,10 @@ def graph_expenses():
     streaming = data["streaming"]
     transportation = data["transportation"]
     hobbies = data["hobbies"]
+    shopping = data["shopping"]
+    clothing = data["clothing"]
     loans = data["loans"]
+    taxes = data["taxes"]
     other = data["other"]
 
     # Convert date strings into real datetime values.
@@ -148,8 +151,17 @@ def graph_expenses():
     hobbies["Date"] = pd.to_datetime(hobbies["Date"], format="%Y%m%d")
     hobbies["Date"] = hobbies["Date"].dt.to_period("M")
     
+    shopping["Date"] = pd.to_datetime(shopping["Date"], format="%Y%m%d")
+    shopping["Date"] = shopping["Date"].dt.to_period("M")
+    
+    clothing["Date"] = pd.to_datetime(clothing["Date"], format="%Y%m%d")
+    clothing["Date"] = clothing["Date"].dt.to_period("M")
+    
     loans["Date"] = pd.to_datetime(loans["Date"], format="%Y%m%d")
     loans["Date"] = loans["Date"].dt.to_period("M")
+    
+    taxes["Date"] = pd.to_datetime(taxes["Date"], format="%Y%m%d")
+    taxes["Date"] = taxes["Date"].dt.to_period("M")
     
     other["Date"] = pd.to_datetime(other["Date"], format="%Y%m%d")
     other["Date"] = other["Date"].dt.to_period("M")
@@ -197,10 +209,28 @@ def graph_expenses():
         .rename(columns={"Amount": "hobbies"})
     )
     
+    shopping_monthly = (
+        shopping.groupby("Date", as_index=False)["Amount"]
+        .sum()
+        .rename(columns={"Amount": "shopping"})
+    )
+    
+    clothing_monthly = (
+        clothing.groupby("Date", as_index=False)["Amount"]
+        .sum()
+        .rename(columns={"Amount": "clothing"})
+    )
+    
     loans_monthly = (
         loans.groupby("Date", as_index=False)["Amount"]
         .sum()
         .rename(columns={"Amount": "loans"})
+    )
+    
+    taxes_monthly = (
+        taxes.groupby("Date", as_index=False)["Amount"]
+        .sum()
+        .rename(columns={"Amount": "taxes"})
     )
     
     other_monthly = (
@@ -210,7 +240,7 @@ def graph_expenses():
     )
 
     # Merge all expenses into one table and make sure missing values become 0.
-    monthly = housing_monthly.merge(utilities_monthly, on="Date", how="outer").merge(insurance_monthly, on="Date", how="outer").merge(groceries_monthly, on="Date", how="outer").merge(streaming_monthly, on="Date", how="outer").merge(transportation_monthly, on="Date", how="outer").merge(hobbies_monthly, on="Date", how="outer").merge(loans_monthly, on="Date", how="outer").merge(other_monthly, on="Date", how="outer").fillna(0)
+    monthly = housing_monthly.merge(utilities_monthly, on="Date", how="outer").merge(insurance_monthly, on="Date", how="outer").merge(groceries_monthly, on="Date", how="outer").merge(streaming_monthly, on="Date", how="outer").merge(transportation_monthly, on="Date", how="outer").merge(hobbies_monthly, on="Date", how="outer").merge(shopping_monthly, on="Date", how="outer").merge(clothing_monthly, on="Date", how="outer").merge(loans_monthly, on="Date", how="outer").merge(taxes_monthly, on="Date", how="outer").merge(other_monthly, on="Date", how="outer").fillna(0)
 
     # Expenses are stored as negative values, so convert them to positive values for plotting.
     monthly["housing"] = monthly["housing"].abs()
@@ -220,12 +250,15 @@ def graph_expenses():
     monthly["streaming"] = monthly["streaming"].abs()
     monthly["transportation"] = monthly["transportation"].abs()
     monthly["hobbies"] = monthly["hobbies"].abs()
+    monthly["shopping"] = monthly["shopping"].abs()
+    monthly["clothing"] = monthly["clothing"].abs()
     monthly["loans"] = monthly["loans"].abs()
+    monthly["taxes"] = monthly["taxes"].abs()
     monthly["other"] = monthly["other"].abs()
     monthly = monthly.sort_values("Date").reset_index(drop=True)
 
     x = np.arange(len(monthly))
-    num_categories = 9
+    num_categories = 12
     width = 1/num_categories
     offsets = np.linspace(-width * (num_categories - 1) / 2, width * (num_categories - 1) / 2, num_categories)
 
@@ -236,8 +269,11 @@ def graph_expenses():
     ax.bar(x + offsets[4], monthly["streaming"], width=width, label="Streaming", color="blue")
     ax.bar(x + offsets[5], monthly["transportation"], width=width, label="Transportation", color="purple")
     ax.bar(x + offsets[6], monthly["hobbies"], width=width, label="Hobbies", color="violet")
-    ax.bar(x + offsets[7], monthly["loans"], width=width, label="Loans", color="grey")
-    ax.bar(x + offsets[8], monthly["other"], width=width, label="Other", color="black")
+    ax.bar(x + offsets[7], monthly["shopping"], width=width, label="Shopping", color="magenta")
+    ax.bar(x + offsets[8], monthly["clothing"], width=width, label="Clothing", color="pink")
+    ax.bar(x + offsets[9], monthly["loans"], width=width, label="Loans", color="grey")
+    ax.bar(x + offsets[10], monthly["taxes"], width=width, label="Taxes", color="grey")
+    ax.bar(x + offsets[11], monthly["other"], width=width, label="Other", color="black")
 
     ax.set_xticks(x)
     ax.set_xticklabels(
@@ -277,7 +313,10 @@ def graph_expenses():
     totals_streaming = monthly["streaming"].cumsum().iloc[-1]
     totals_transportation = monthly["transportation"].cumsum().iloc[-1]
     totals_hobbies = monthly["hobbies"].cumsum().iloc[-1]
+    totals_shopping = monthly["shopping"].cumsum().iloc[-1]
+    totals_clothing = monthly["clothing"].cumsum().iloc[-1]
     totals_loans = monthly["loans"].cumsum().iloc[-1]
+    totals_taxes = monthly["taxes"].cumsum().iloc[-1]
     totals_other = monthly["other"].cumsum().iloc[-1]
 
     # Add box to annotate the final totals.
@@ -289,7 +328,10 @@ def graph_expenses():
         f"Total streaming: {currency_symbol}{totals_streaming:,.0f}\n"
         f"Total transportation: {currency_symbol}{totals_transportation:,.0f}\n"
         f"Total hobbies: {currency_symbol}{totals_hobbies:,.0f}\n"
+        f"Total shopping: {currency_symbol}{totals_shopping:,.0f}\n"
+        f"Total clothing: {currency_symbol}{totals_clothing:,.0f}\n"
         f"Total loans: {currency_symbol}{totals_loans:,.0f}\n"
+        f"Total taxes: {currency_symbol}{totals_taxes:,.0f}\n"
         f"Total other: {currency_symbol}{totals_other:,.0f}",
         xy = (last_x, 0),
         xytext=(10, 10),
@@ -301,7 +343,3 @@ def graph_expenses():
     fig.canvas.manager.set_window_title("Finance Dashboard")
     fig.canvas.manager.resize(1280, 720)
     plt.show()
-
-if __name__ == "__main__":
-    graph_expenses()
-    # plot_totals()

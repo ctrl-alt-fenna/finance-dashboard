@@ -1,5 +1,5 @@
 {
-    "finance_file": "finance_example.xls",
+    "finance_file": "data/finance_example.xls",
     "expense_categories": ["housing", "insurance", "food", "utilities", "transportation", "savings", "hobby", "personal"],
     "income_categories": ["salary", "tax_returns", "interest", "benefits"],
     "excluded_descriptions": ["transfer"],

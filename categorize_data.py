@@ -15,7 +15,10 @@ def categorize_expenses():
     streaming = '|'.join(categories["streaming"])
     transportation = '|'.join(categories["transportation"])
     hobbies = '|'.join(categories["hobbies"])
+    shopping = '|'.join(categories["shopping"])
+    clothing = '|'.join(categories["clothing"])
     loans = '|'.join(categories["loans"])
+    taxes = '|'.join(categories["taxes"])
     
     # Create masks by filtering rows if description matches any of the categories.
     housing_mask = pd.Series(False, index=expenses.index)
@@ -25,7 +28,10 @@ def categorize_expenses():
     streaming_mask = pd.Series(False, index=expenses.index)
     transportation_mask = pd.Series(False, index=expenses.index)
     hobbies_mask = pd.Series(False, index=expenses.index)
+    shopping_mask = pd.Series(False, index=expenses.index)
+    clothing_mask = pd.Series(False, index=expenses.index)
     loans_mask = pd.Series(False, index=expenses.index)
+    taxes_mask = pd.Series(False, index=expenses.index)
     
     # Mask each category to filter easily
     if housing:
@@ -42,10 +48,16 @@ def categorize_expenses():
         transportation_mask = expenses["Description"].str.contains(transportation, case=False, na=False)
     if hobbies:
         hobbies_mask = expenses["Description"].str.contains(hobbies, case=False, na=False)
+    if shopping:
+        shopping_mask = expenses["Description"].str.contains(shopping, case=False, na=False)
+    if clothing:
+        clothing_mask = expenses["Description"].str.contains(clothing, case=False, na=False)
     if loans:
         loans_mask = expenses["Description"].str.contains(loans, case=False, na=False)
+    if taxes:
+        taxes_mask = expenses["Description"].str.contains(taxes, case=False, na=False)
     
-    other_mask = (~housing_mask  & ~insurance_mask & ~util_mask & ~grocery_mask & ~streaming_mask & ~transportation_mask & ~hobbies_mask & ~loans_mask)
+    other_mask = (~housing_mask  & ~insurance_mask & ~util_mask & ~grocery_mask & ~streaming_mask & ~transportation_mask & ~hobbies_mask & ~shopping_mask & ~clothing_mask & ~loans_mask & ~taxes_mask)
         
     # Filter the rows based on each category, then finally add the remainder to other
     housing_transactions = expenses[housing_mask]
@@ -55,7 +67,11 @@ def categorize_expenses():
     streaming_transactions = expenses[streaming_mask]
     transportation_transactions = expenses[transportation_mask]
     hobbies_transactions = expenses[hobbies_mask]
+    shopping_transactions = expenses[shopping_mask]
+    clothing_transactions = expenses[clothing_mask]
     loans_transactions = expenses[loans_mask]
+    taxes_transactions = expenses[loans_mask]
+    
     other_transactions = expenses[other_mask].copy()
         
     return {
@@ -66,7 +82,10 @@ def categorize_expenses():
         "streaming" : streaming_transactions,
         "transportation" : transportation_transactions,
         "hobbies" : hobbies_transactions,
+        "shopping" : shopping_transactions,
+        "clothing" : clothing_transactions,
         "loans" : loans_transactions,
+        "taxes" : taxes_transactions,
         "other": other_transactions
     }
     
@@ -93,7 +112,10 @@ def parse_categories():
         streaming = data.get("streaming", [])
         transportation = data.get("transportation", [])
         hobbies = data.get("hobbies", [])
+        shopping = data.get("shopping", [])
+        clothing = data.get("clothing", [])
         loans = data.get("loans", [])
+        taxes = data.get("taxes", [])
     # Return all relevant settings so other functions can use them.
     return {
         "insurance": insurance,
@@ -103,5 +125,8 @@ def parse_categories():
         "streaming" : streaming,
         "transportation": transportation,
         "hobbies": hobbies,
-        "loans": loans
+        "shopping": shopping,
+        "clothing": clothing,
+        "loans": loans,
+        "taxes": taxes
     }

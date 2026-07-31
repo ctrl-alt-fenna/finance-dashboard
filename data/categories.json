@@ -5,5 +5,9 @@
     "groceries" : ["groceries", "household supplies"],
     "streaming" : ["streaming"],
     "transportation" : ["transportation", "transport"],
-    "hobbies": ["clothing"]
+    "hobbies": [""],
+    "taxes": ["taxes"],
+    "clothing": ["clothing"],
+    "shopping": [],
+    "loans": []
 }

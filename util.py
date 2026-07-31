@@ -5,8 +5,8 @@ import datetime
 
 global CONFIG_FILENAME
 global CATEGORIES_FILENAME
-CONFIG_FILENAME = "config.json"
-CATEGORIES_FILENAME = "categories.json"
+CONFIG_FILENAME = "data/config.json"
+CATEGORIES_FILENAME = "data/categories.json"
 
 def parse_date_value(value, date_format):
     """Parse date-like values using the configured format, with a few common fallbacks."""
