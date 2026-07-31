@@ -20,12 +20,16 @@ In categories.json, add any description markers for certain transactions. For ex
 - housing
 - utilities
 - insurance
+- groceries
+- streaming
+- transportation
+- hobbies
+- loans
 
 Currencies currently supported:
 - usd ($)
 - eur (€)
 - gbp (£)
 - jpy (¥)
-Default is usd.
 
-I'm still working on categorizing each transaction based on given categories by asking a few questions to the user, but I already included those in the config file. 
+Default is usd.
